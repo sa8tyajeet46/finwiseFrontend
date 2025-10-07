@@ -15,11 +15,7 @@
       </div>
 
       <!-- Dialog -->
-      <DialogWrapper
-        v-model="showDialog"
-        title="Add Transaction"
-        @confirm="saveTransaction"
-      >
+      <DialogWrapper v-model="showDialog" title="Add Transaction" @confirm="saveTransaction">
         <form class="space-y-4" @submit.prevent="saveTransaction">
           <div>
             <label class="block text-sm font-medium text-gray-700">Amount</label>
@@ -30,13 +26,9 @@
             />
           </div>
           <div>
-      <label class="block text-sm font-medium text-gray-700">Date</label>
-      <Datepicker
-        v-model="form.date"
-        :enable-time-picker="false"
-        class="w-full mt-1"
-      />
-    </div>
+            <label class="block text-sm font-medium text-gray-700">Date</label>
+            <Datepicker v-model="form.date" :enable-time-picker="false" class="w-full mt-1" />
+          </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700">Category</label>
@@ -57,15 +49,11 @@
 
           <div>
             <label class="block text-sm font-medium text-gray-700">Type</label>
-            <select
-              v-model="form.type"
-              class="w-full mt-1 px-3 py-2 border rounded-lg"
-            >
+            <select v-model="form.type" class="w-full mt-1 px-3 py-2 border rounded-lg">
               <option value="EXPENSE">Expense</option>
               <option value="INCOME">Income</option>
             </select>
           </div>
-           
         </form>
 
         <!-- Footer slot -->
@@ -87,10 +75,7 @@
 
       <!-- Transactions list -->
       <div v-if="transactionStore.loading">Loading transactions...</div>
-      <div
-        class="w-full flex flex-wrap gap-5"
-        v-else-if="transactionStore.transactions.length"
-      >
+      <div class="w-full flex flex-wrap gap-5" v-else-if="transactionStore.transactions.length">
         <TransactionCard
           v-for="transaction in transactionStore.transactions"
           :key="transaction._id"
@@ -99,6 +84,7 @@
       </div>
       <div v-else>No transactions found</div>
     </div>
+    <router-link to="/generate/taxadvice"><button>generate tax advice</button></router-link>
   </div>
 </template>
 
@@ -119,7 +105,7 @@ const form = ref({
   category: '',
   note: '',
   type: 'EXPENSE',
-  date: new Date()
+  date: new Date(),
 })
 
 // ✅ Only fetch once
@@ -141,11 +127,11 @@ async function saveTransaction() {
     form.value.type,
     form.value.category,
     form.value.note,
-    form.value.date
+    form.value.date,
   )
 
   // Close and reset
   closeDialog()
-  form.value = { amount: '', category: '', note: '', type: 'EXPENSE', date:new Date() }
+  form.value = { amount: '', category: '', note: '', type: 'EXPENSE', date: new Date() }
 }
 </script>

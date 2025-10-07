@@ -3,7 +3,7 @@ import api from './axios'
 
 export async function apiCall(endpoint, payload = {}, method = 'post') {
   const useErrorDialog = useErrorDialogStore()
-  
+
   try {
     const url = `${import.meta.env.VITE_BACKEND_URL}${endpoint}`
 
@@ -27,7 +27,7 @@ export async function apiCall(endpoint, payload = {}, method = 'post') {
     return res.data
   } catch (err) {
     const errorResponse = err?.response?.data
-    
+
     if (errorResponse?.errors) {
       useErrorDialog.setValidationError(errorResponse.errors || [])
     }

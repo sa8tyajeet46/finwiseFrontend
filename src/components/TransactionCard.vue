@@ -11,9 +11,13 @@
       <p class="text-gray-400 text-xs mt-1">
         {{ formatDate(transaction.date) }}
       </p>
-      <div class=" flex space-x-3">
-        <button @click="isDeleteDialogOpen = true"><i class="pi pi-trash cursor-pointer"></i></button>
-        <button @click="isEditDialogOpen = true"><i class="pi pi-pencil cursor-pointer"></i></button>
+      <div class="flex space-x-3">
+        <button @click="isDeleteDialogOpen = true">
+          <i class="pi pi-trash cursor-pointer"></i>
+        </button>
+        <button @click="isEditDialogOpen = true">
+          <i class="pi pi-pencil cursor-pointer"></i>
+        </button>
       </div>
     </div>
 
@@ -34,8 +38,8 @@
       title="Delete Transaction"
       @confirm="deleteTransaction"
     >
-    <div>Are you sure you want to delete the transaction?</div>
-    <template #footer>
+      <div>Are you sure you want to delete the transaction?</div>
+      <template #footer>
         <button
           class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100"
           @click="isDeleteDialogOpen = false"
@@ -49,14 +53,10 @@
           Confirm
         </button>
       </template>
-  </DialogWrapper>
+    </DialogWrapper>
 
-  <DialogWrapper
-      v-model="isEditDialogOpen"
-      title="Edit Transaction"
-      @confirm="editTransaction"
-    >
-    <form class="space-y-4">
+    <DialogWrapper v-model="isEditDialogOpen" title="Edit Transaction" @confirm="editTransaction">
+      <form class="space-y-4">
         <div>
           <label class="block text-sm font-medium text-gray-700">Amount</label>
           <input
@@ -66,13 +66,9 @@
           />
         </div>
         <div>
-      <label class="block text-sm font-medium text-gray-700">Date</label>
-      <Datepicker
-        v-model="form.date"
-        :enable-time-picker="false"
-        class="w-full mt-1"
-      />
-    </div>
+          <label class="block text-sm font-medium text-gray-700">Date</label>
+          <Datepicker v-model="form.date" :enable-time-picker="false" class="w-full mt-1" />
+        </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700">Category</label>
@@ -85,24 +81,18 @@
 
         <div>
           <label class="block text-sm font-medium text-gray-700">Note</label>
-          <textarea
-            v-model="form.note"
-            class="w-full mt-1 px-3 py-2 border rounded-lg"
-          ></textarea>
+          <textarea v-model="form.note" class="w-full mt-1 px-3 py-2 border rounded-lg"></textarea>
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700">Type</label>
-          <select
-            v-model="form.type"
-            class="w-full mt-1 px-3 py-2 border rounded-lg"
-          >
+          <select v-model="form.type" class="w-full mt-1 px-3 py-2 border rounded-lg">
             <option value="EXPENSE">Expense</option>
             <option value="INCOME">Income</option>
           </select>
         </div>
       </form>
-    <template #footer>
+      <template #footer>
         <button
           class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100"
           @click="isEditDialogOpen = false"
@@ -116,14 +106,14 @@
           Confirm
         </button>
       </template>
-  </DialogWrapper>
+    </DialogWrapper>
   </div>
 </template>
 
 <script setup>
-import { defineProps,ref } from 'vue'
-import DialogWrapper from './DialogWrapper.vue';
-import { useTransactionStore } from '@/stores/transaction';
+import { defineProps, ref } from 'vue'
+import DialogWrapper from './DialogWrapper.vue'
+import { useTransactionStore } from '@/stores/transaction'
 import Datepicker from 'vue3-datepicker'
 
 const props = defineProps({
@@ -134,28 +124,33 @@ const props = defineProps({
 })
 
 const transactionStore = useTransactionStore()
-let isDeleteDialogOpen=ref(false);
-let isEditDialogOpen=ref(false);
+let isDeleteDialogOpen = ref(false)
+let isEditDialogOpen = ref(false)
 
 const form = ref({
   amount: props.transaction.amount,
   category: props.transaction.category,
   note: props.transaction.note,
   type: props.transaction.type,
-  date:new Date(props.transaction.date)
-});
+  date: new Date(props.transaction.date),
+})
 
-async function deleteTransaction(){
-   await transactionStore.deleteTransaction(props.transaction._id);
-   isDeleteDialogOpen.value=false;
+async function deleteTransaction() {
+  await transactionStore.deleteTransaction(props.transaction._id)
+  isDeleteDialogOpen.value = false
 }
 
-async function editTransaction(){
-   await transactionStore.editTransaction(form.value.amount,form.value.type,form.value.category,form.value.note,props.transaction._id,form.value.date);
-   isEditDialogOpen.value=false;
+async function editTransaction() {
+  await transactionStore.editTransaction(
+    form.value.amount,
+    form.value.type,
+    form.value.category,
+    form.value.note,
+    props.transaction._id,
+    form.value.date,
+  )
+  isEditDialogOpen.value = false
 }
-
-
 
 function formatDate(dateStr) {
   const d = new Date(dateStr)

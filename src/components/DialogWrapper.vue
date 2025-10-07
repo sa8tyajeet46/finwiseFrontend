@@ -1,25 +1,15 @@
 <template>
   <Teleport to="body">
-    <div
-      v-if="modelValue"
-      class="fixed inset-0 flex items-center justify-center z-50"
-    >
+    <div v-if="modelValue" class="fixed inset-0 flex items-center justify-center z-50">
       <!-- Overlay -->
-      <div
-        class="absolute inset-0 bg-black bg-opacity-50"
-        @click="close"
-      ></div>
+      <div class="absolute inset-0 bg-black bg-opacity-50" @click="close"></div>
 
       <!-- Dialog Box -->
-      <div
-        class="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-6 z-10"
-      >
+      <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-6 z-10">
         <!-- Header -->
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-lg font-semibold text-gray-800">{{ title }}</h2>
-          <button @click="close" class="text-gray-500 hover:text-gray-700">
-            ✕
-          </button>
+          <button @click="close" class="text-gray-500 hover:text-gray-700">✕</button>
         </div>
 
         <!-- Content slot -->
@@ -52,12 +42,12 @@
 <script setup>
 const props = defineProps({
   modelValue: { type: Boolean, required: true },
-  title: { type: String, default: "Dialog" },
-});
+  title: { type: String, default: 'Dialog' },
+})
 
-const emit = defineEmits(["update:modelValue", "confirm"]);
+const emit = defineEmits(['update:modelValue', 'confirm'])
 
 function close() {
-  emit("update:modelValue", false);
+  emit('update:modelValue', false)
 }
 </script>

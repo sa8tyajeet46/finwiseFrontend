@@ -7,6 +7,7 @@ export const useAuthStore = defineStore('auth', {
     isAuthenticated: false,
     token: localStorage.getItem('token') || '',
     user: null,
+    remainingUses: 0,
   }),
 
   actions: {
@@ -23,8 +24,9 @@ export const useAuthStore = defineStore('auth', {
         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/me`, {
           headers: { Authorization: `Bearer ${this.token}` },
         })
-        this.user = res.data
+        this.user = res.data.user
         this.isAuthenticated = true
+        this.remainingUses = res.data.remainingUses
       } catch (err) {
         console.error('Token invalid or expired', err)
         this.logout()
